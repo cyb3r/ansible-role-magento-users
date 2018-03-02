@@ -4,4 +4,6 @@ magento_users_install_to_path: "/usr/local/bin"
 magento_users_n98mrun_binary_name: "n98-magerun"
 magento_users_magento_root: "/var/www"
 magento_users_owner: "root"
+magento_users_delete_users: false
 
+magento_users_user_list: []

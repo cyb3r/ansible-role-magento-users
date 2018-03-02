@@ -5,3 +5,34 @@
     dest: "{{ magento_users_install_to_path }}/{{ magento_users_n98mrun_binary_name }}"
     mode: 0755
     owner: "{{ magento_users_owner }}"
+
+- name: get list of existing active users
+  shell: "{{ magento_users_n98mrun_binary_name }} admin:user:list --format=\"csv\" | grep -e \"^[0-9]\" | awk -F',' '{print $2}'"
+  args:
+    executable: /bin/bash
+    chdir: "{{ magento_users_magento_root }}"
+  become: true
+  become_user: "{{ magento_users_magento_owner }}"
+  register: magento_users_existing_result
+
+- set_fact:
+    magento_users_existing: "{{ magento_users_existing_result.stdout_lines }}"
+    magento_users_expected: "{{ magento_users_user_list|json_query('[*].login')}}"
+
+- name: add/update users
+  include: add-update-user.yml
+  with_items: "{{ magento_users_user_list }}"
+
+- name: show users which are going to be deleted
+  debug:
+    var: "magento_users_existing | difference(magento_users_expected)"
+
+- name: delete users which are not supposed to be there
+  shell: "{{ magento_users_n98mrun_binary_name }} admin:user:delete {{ item }} -f"
+  args:
+    executable: /bin/bash
+    chdir: "{{ magento_users_magento_root }}"
+  become: true
+  become_user: "{{ magento_users_magento_owner }}"
+  with_items: "{{ magento_users_existing | difference(magento_users_expected) }}"
+  when: magento_users_delete_users

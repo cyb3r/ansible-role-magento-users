@@ -1,0 +1,18 @@
+---
+- name: "Create {{ item.login }} user"
+  shell: "{{ magento_users_n98mrun_binary_name }} admin:user:create '{{ item.login }}' '{{ item.email }}' '{{ item.pass }}'"
+  args:
+    executable: /bin/bash
+    chdir: "{{ magento_users_magento_root }}"
+  become: true
+  become_user: "{{ magento_users_magento_owner }}"
+  when: item.login not in magento_users_existing
+
+- name: "Update {{ item.login }} user's password"
+  shell: "{{ magento_users_n98mrun_binary_name }} admin:user:change-password '{{ item.login }}' '{{ item.pass }}'"
+  args:
+    executable: /bin/bash
+    chdir: "{{ magento_users_magento_root }}"
+  become: true
+  become_user: "{{ magento_users_magento_owner }}"
+  when: item.login in magento_users_existing
