@@ -1,0 +1,7 @@
+---
+- name: Download n98-magerun binary
+  get_url:
+    url: "{{ magento_users_n98mrun_download_url }}"
+    dest: "{{ magento_users_install_to_path }}/{{ magento_users_n98mrun_binary_name }}"
+    mode: 0755
+    owner: "{{ magento_users_owner }}"

@@ -1,0 +1,7 @@
+---
+magento_users_n98mrun_download_url: "https://files.magerun.net/n98-magerun.phar"
+magento_users_install_to_path: "/usr/local/bin"
+magento_users_n98mrun_binary_name: "n98-magerun"
+magento_users_magento_root: "/var/www"
+magento_users_owner: "root"
+
