@@ -5,6 +5,7 @@
     dest: "{{ magento_users_install_to_path }}/{{ magento_users_n98mrun_binary_name }}"
     mode: 0755
     owner: "{{ magento_users_owner }}"
+    timeout: 300
 
 - name: get list of existing active users
   shell: "{{ magento_users_n98mrun_binary_name }} admin:user:list --format=\"csv\" | grep -e \"^[0-9]\" | awk -F',' '{print $2}'"
